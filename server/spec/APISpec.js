@@ -78,3 +78,33 @@ describe("Test /searchStudent", function() {
 
 
 });
+
+// Test for delete
+describe("Test /deleteStudent", function() {
+    it("returns status code 200 with valid ID", function(done) {
+        request.post(
+            base_url + "deleteStudent?ID=1", 
+            function(error, response, body) {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    }); 
+    
+    it("returns status code 404 with nonpresent ID", function(done) {
+        request.post(
+            base_url + "deleteStudent?ID=40", 
+            function(error, response, body) {
+                expect(response.statusCode).toBe(404);
+                done();
+            });
+    }); 
+    
+    it("returns status code 404 with no parameters", function(done) {
+        request.post(
+            base_url + "deleteStudent", 
+            function(error, response, body) {
+                expect(response.statusCode).toBe(406);
+                done();
+            });
+    }); 
+});
