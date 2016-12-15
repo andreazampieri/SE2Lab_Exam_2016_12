@@ -272,3 +272,81 @@ app.listen(app.get('port'), function() {
 });
 
 //AGGIUNGERE QUI SOTTO NUOVE FUNZIONI
+
+app.post('/searchByMark',function(request,response)
+{
+    var headers = {};
+	headers["Access-Control-Allow-Origin"] = "*";
+	headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+	headers["Access-Control-Allow-Credentials"] = false;
+	headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+	headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+	headers["Content-Type"] = "application/json";
+
+    //check body and parameters
+	if ( typeof request.body !== 'undefined' && request.body)
+	{
+        var criteria;
+		if ( typeof request.body.criteria !== 'undefined' && request.body.criteria)
+        {
+            criteria= request.body.ID;
+        }
+		else
+        { 
+			criteria = "not defined";
+        }
+        
+        if(isValidCriteria(criteria))
+        {
+            var limit = parseInt(criteria.substr(1,criteria.length));
+            var stud = studentManager.getList();
+            var results = [];
+            for(var i=0;i<stud.length;i++)
+            {
+                var tmp = stud[i];
+                switch(criteria[0]){
+                    case "<":
+                        if(parseInt(tmp.mark)<limit)
+                        {
+                            results.push(tmp);
+                        }
+                        break;
+                    case ">":
+                        if(parseInt(tmp.mark)>limit)
+                        {
+                            results.push(tmp);
+                        }
+                        break;
+                    }
+            }
+            response.writeHead(200,headers);
+            response.end(JSON.stringify(results));
+        }
+        else
+        {
+            response.writeHead(200,headers);
+            response.end(JSON.stringify([]));
+        }
+	}
+    else
+    {
+        response.writeHead(200,headers);
+        response.end(JSON.stringify([]));
+    }
+    
+});
+
+/**
+ *  Functions that checks if the criteria is of the form (<|>)[0-9]
+ */
+function isValidCriteria(s){
+    var value = s.substr(1,s.length);
+    if((s[0] == '<' || s[0] == '>') && (!isNaN(parseInt(value)) && parseInt(value)<10 && parseInt(value)>= 0))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
