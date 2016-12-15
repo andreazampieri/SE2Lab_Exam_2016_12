@@ -19,6 +19,10 @@ paths:
       responses:
         200:
           description: the home page
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/student"
           
   /searchStudent:
     post:
@@ -63,9 +67,9 @@ paths:
         200:
           description: name of the student
           schema: 
-            $ref: "#/definitions/student"
+            type: string
         406:
-          description: ID of error
+          description: ID of error for an unacceptable input
           schema: 
             properties:
               error:
@@ -78,7 +82,7 @@ paths:
       summary: return students that match a criteria
       description: it returns a list of students that match a criteria
       parameters:
-        - name: criteria
+        - name: mark
           in: formData
           description: criteria to be matched
           required: true
@@ -106,4 +110,6 @@ definitions:
       address:
         type: string
         description: address of the student
-
+      mark:
+        type: number
+        description: mark of the student

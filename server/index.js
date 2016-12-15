@@ -287,9 +287,9 @@ app.post('/searchByMark',function(request,response)
 	if ( typeof request.body !== 'undefined' && request.body)
 	{
         var criteria;
-		if ( typeof request.body.criteria !== 'undefined' && request.body.criteria)
+		if ( typeof request.body.mark !== 'undefined' && request.body.mark)
         {
-            criteria= request.body.ID;
+            criteria= request.body.mark;
         }
 		else
         { 
