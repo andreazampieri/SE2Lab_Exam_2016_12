@@ -107,4 +107,13 @@ describe("Test /deleteStudent", function() {
                 done();
             });
     }); 
+    
+    it("returns status code 200 with ssn 9IK8", function(done) {
+        request.post(
+            base_url + "deleteStudent?SSN=9IK8", 
+            function(error, response, body) {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    }); 
 });
